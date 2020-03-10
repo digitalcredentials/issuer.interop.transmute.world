@@ -1,5 +1,6 @@
 import React from 'react';
 import * as chapi from 'credential-handler-polyfill';
+import GithubCorner from 'react-github-corner';
 
 import Theme from './components/Theme'
 import './App.css';
@@ -21,6 +22,7 @@ function App() {
   return (
     <Theme>
       <div className="App">
+        <GithubCorner bannerColor={'#594aa8'} href="https://github.com/transmute-industries/issuer.interop.transmute.world" />
         <div style={{ maxWidth: '512px', margin: 'auto', paddingTop: '10%', }}>
           <img src={logo} alt="transmute logo" style={{ width: '50%', margin: 'auto', display: 'block', padding: '32px 0px' }} />
           <ReceiveCredential />

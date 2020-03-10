@@ -17,6 +17,7 @@
     "react": "^16.13.0",
     "react-ace": "^6.3.2",
     "react-dom": "^16.13.0",
+    "react-github-corner": "^2.3.0",
     "react-scripts": "3.4.0",
     "vc-js": "^0.4.1",
     "web-credential-handler": "^1.0.1"
