@@ -1,4 +1,6 @@
-# Transmute Issuer Interop Demo
+# Transmute Issuer
+
+This is for demonstration purposes only.
 
 ## Testing with NGROK
 
