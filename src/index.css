@@ -1,6 +1,19 @@
 
+html{
+  background: #000;
+  background-image: url("/steel.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-blend-mode: darken;
+  background-repeat: none;
+}
 html, body {
-  background: #e0e0e0;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 body {

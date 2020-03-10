@@ -49,3 +49,36 @@ export const getVP = async (credentialSubjectId) => {
   };
   return vp;
 }
+
+export const getVpFromIssuerApi = async (credentialSubjectId) => {
+  const issuerEndpoint = 'https://vc.transmute.world/api/v0/issuer/issue';
+  const payload = {
+    ...vcBindingModel,
+    issuer: key.controller,
+    credentialSubject: {
+      ...vcBindingModel.credentialSubject,
+      id: credentialSubjectId
+    }
+  }
+  const response = await fetch(issuerEndpoint, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(payload)
+  });
+  let vc = await response.json();
+  const vp = {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+      "https://www.w3.org/2018/credentials/examples/v1"
+    ],
+    "type": "VerifiablePresentation",
+    "verifiableCredential": [vc]
+  };
+  return vp;
+}
