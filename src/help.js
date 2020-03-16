@@ -1,65 +1,19 @@
 
-import { Ed25519KeyPair } from "crypto-ld";
-// import didMethodKey from "did-method-key";
-import vcjs from 'vc-js'
-import jsigs from 'jsonld-signatures'
+import bindingModels from './bindingModels'
 
-import privateKey from './data/privateKey.json'
-import vcBindingModel from './data/vc.bindingModel.json'
-
-const { Ed25519Signature2018 } = jsigs.suites;
-// const { keyToDidDoc } = didMethodKey.driver();
-
-const key = new Ed25519KeyPair({
-  ...privateKey,
-  id: 'did:web:issuer.interop.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN',
-  controller: 'did:web:issuer.interop.transmute.world',
-});
-
-const suite = new Ed25519Signature2018({
-  key: key,
-  verificationMethod: key.id
-});
-
-export const getVC = async (credentialSubjectId) => {
-  const vc = await vcjs.issue({
-    credential: {
-      ...vcBindingModel,
-      issuer: key.controller,
-      credentialSubject: {
-        ...vcBindingModel.credentialSubject,
-        id: credentialSubjectId
-      }
-    },
-    suite,
-    // documentLoader
-  })
-  return vc;
-}
-
-export const getVP = async (credentialSubjectId) => {
-  const vc = await getVC(credentialSubjectId);
-  const vp = {
-    "@context": [
-      "https://www.w3.org/2018/credentials/v1",
-      "https://www.w3.org/2018/credentials/examples/v1"
-    ],
-    "type": "VerifiablePresentation",
-    "verifiableCredential": [vc]
-  };
-  return vp;
-}
-
-export const getVpFromIssuerApi = async (credentialSubjectId) => {
+export const getVpFromIssuerApi = async (credentialType, credentialSubjectId) => {
   const issuerEndpoint = 'https://vc.transmute.world/api/v0/issuer/issue';
+  let bindingModel = bindingModels[credentialType]
+
   const payload = {
-    ...vcBindingModel,
-    issuer: key.controller,
+    ...bindingModel,
+    issuer: "did:web:vc.transmute.world",
     credentialSubject: {
-      ...vcBindingModel.credentialSubject,
+      ...bindingModel.credentialSubject,
       id: credentialSubjectId
     }
   }
+
   const response = await fetch(issuerEndpoint, {
     method: 'POST',
     mode: 'cors',

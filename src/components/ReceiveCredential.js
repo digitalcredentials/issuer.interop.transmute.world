@@ -2,6 +2,7 @@ import React from 'react';
 
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button/Button'
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Paper from '@material-ui/core/Paper';
 
@@ -11,12 +12,33 @@ import { getVpFromIssuerApi } from '../help';
 
 import Snackbar from './Snackbar';
 
+
+const options = [
+  {
+    value: 'CertifiedMillTestReport',
+    label: 'Certified Mill Test Report',
+  },
+  {
+    value: 'UniversityDegreeCredential',
+    label: 'University Degree Credential',
+  },
+  {
+    value: 'DIDAuth',
+    label: 'DID Authentication',
+  },
+];
+
 function ReceiveCredential() {
 
   const [state, setState] = React.useState({
     credentialSubjectId: 'did:example:credential-subject-123',
+    credentialType: 'CertifiedMillTestReport',
     tmui: {}
   });
+
+  const handleChange = event => {
+    setState({ ...state, credentialType: event.target.value });
+  };
 
   return (
     <Paper style={{ padding: '32px' }}>
@@ -29,7 +51,24 @@ function ReceiveCredential() {
           }
         })
       }} />
-      <Typography variant="h6" style={{ marginBottom: '32px' }}>Certified Mill Test Report</Typography>
+      <Typography variant="h6" style={{ marginBottom: '32px' }}>Receive a Verifiable Credential</Typography>
+
+      <TextField
+        id="outlined-select-credentialType"
+        style={{ marginBottom: '16px' }}
+        select
+        fullWidth
+        label="Credential Type"
+        value={state.credentialType}
+        onChange={handleChange}
+        variant="outlined"
+      >
+        {options.map(option => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
       <TextField
         required
         fullWidth
@@ -40,7 +79,7 @@ function ReceiveCredential() {
       />
       <div style={{ marginTop: '16px', marginBottom: '16px', }}>
         <Button variant={'contained'} onClick={async () => {
-          const vp = await getVpFromIssuerApi(state.credentialSubjectId)
+          const vp = await getVpFromIssuerApi(state.credentialType, state.credentialSubjectId)
           const webCredentialWrapper = new global.WebCredential(vp.type, vp);
           // Use Credential Handler API to store
           const result = await navigator.credentials.store(webCredentialWrapper);

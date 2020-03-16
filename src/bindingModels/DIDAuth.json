@@ -1,0 +1,13 @@
+{
+    "@context": [
+        "https://www.w3.org/2018/credentials/v1"
+    ],
+    "type": [
+        "VerifiableCredential",
+        "VerifiablePresentation"
+    ],
+    "issuanceDate": "2020-03-16T22:37:26.544Z",
+    "credentialSubject": {
+        "id": "did:example:ebfeb1f712ebc6f1c276e12ec21"
+    }
+}
