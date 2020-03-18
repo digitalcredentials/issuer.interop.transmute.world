@@ -2,7 +2,7 @@
 import bindingModels from './bindingModels'
 
 export const getVpFromIssuerApi = async (credentialType, credentialSubjectId) => {
-  const issuerEndpoint = 'https://vc.transmute.world/api/v0/issuer/issue';
+  const issuerEndpoint = 'https://vc.transmute.world/vc-data-model/credentials';
   let bindingModel = bindingModels[credentialType]
 
   const payload = {
