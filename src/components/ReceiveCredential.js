@@ -1,17 +1,16 @@
 import React from 'react';
 
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button/Button'
 import MenuItem from '@material-ui/core/MenuItem';
-
 import Paper from '@material-ui/core/Paper';
-
 import TextField from '@material-ui/core/TextField/TextField'
-
-import { getVpFromIssuerApi } from '../help';
-
 import Snackbar from './Snackbar';
 
+import Example from './Example'
+
+import forms from './Example/forms';
+
+import { getVpForAddToWalletType } from '../help';
 
 const options = [
   {
@@ -31,13 +30,12 @@ const options = [
 function ReceiveCredential() {
 
   const [state, setState] = React.useState({
-    credentialSubjectId: 'did:example:credential-subject-123',
-    credentialType: 'CertifiedMillTestReport',
+    addToWalletType: 'CertifiedMillTestReport',
     tmui: {}
   });
 
   const handleChange = event => {
-    setState({ ...state, credentialType: event.target.value });
+    setState({ ...state, addToWalletType: event.target.value });
   };
 
   return (
@@ -51,15 +49,15 @@ function ReceiveCredential() {
           }
         })
       }} />
-      <Typography variant="h6" style={{ marginBottom: '32px' }}>Receive a Verifiable Credential</Typography>
+      <Typography variant="h6" style={{ marginBottom: '32px' }}>Add to Wallet</Typography>
 
       <TextField
-        id="outlined-select-credentialType"
+        id="outlined-select-addToWalletType"
         style={{ marginBottom: '16px' }}
         select
         fullWidth
-        label="Credential Type"
-        value={state.credentialType}
+        label="Type"
+        value={state.addToWalletType}
         onChange={handleChange}
         variant="outlined"
       >
@@ -69,40 +67,29 @@ function ReceiveCredential() {
           </MenuItem>
         ))}
       </TextField>
-      <TextField
-        required
-        fullWidth
-        id="credentialSubjectId"
-        label="Credential Subject ID"
-        variant="outlined"
-        value={state.credentialSubjectId}
-      />
-      <div style={{ marginTop: '16px', marginBottom: '16px', }}>
-        <Button variant={'contained'} onClick={async () => {
-          const vp = await getVpFromIssuerApi(state.credentialType, state.credentialSubjectId)
-          const webCredentialWrapper = new global.WebCredential(vp.type, vp);
-          // Use Credential Handler API to store
-          const result = await navigator.credentials.store(webCredentialWrapper);
-          console.log('Result of receiving via store() request:', result);
-          setState({
-            ...state,
-            tmui: {
-              ...state.tmui,
-              snackBarMessage: {
-                open: true,
-                variant: 'success',
-                message: 'Credential stored in wallet.',
-                vertical: 'top',
-                horizontal: 'right',
-                autoHideDuration: 20 * 1000,
-              },
-            }
+
+      <Example {...forms[state.addToWalletType]} onSubmit={async (formData) => {
+        const vp = await getVpForAddToWalletType(state.addToWalletType, formData)
+        const webCredentialWrapper = new global.WebCredential(vp.type, vp);
+        // Use Credential Handler API to store
+        const result = await navigator.credentials.store(webCredentialWrapper);
+        console.log('Result of receiving via store() request:', result);
+        setState({
+          ...state,
+          tmui: {
+            ...state.tmui,
+            snackBarMessage: {
+              open: true,
+              variant: 'success',
+              message: 'Credential stored in wallet.',
+              vertical: 'top',
+              horizontal: 'right',
+              autoHideDuration: 20 * 1000,
+            },
           }
-          );
-        }}>Receive Credential</Button>
-      </div>
-
-
+        }
+        );
+      }} />
     </Paper >
   );
 }

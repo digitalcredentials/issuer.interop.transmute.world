@@ -1,0 +1,7 @@
+{
+    "proofPurpose": "authentication",
+    "holder": "did:example:123",
+    "domain": "vc.transmute.world",
+    "challenge": "99612b24-63d9-11ea-b99f-4f66f3e4f81a",
+    "verificationMethod": "did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN"
+}

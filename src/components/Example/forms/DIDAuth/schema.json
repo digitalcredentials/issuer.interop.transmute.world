@@ -1,0 +1,39 @@
+{
+    "$id": "did-auth-vp-request-schema",
+    "type": "object",
+    "title": "DIDAuth VP Request Format Schema",
+    "properties": {
+        "holder": {
+            "title": "Holder",
+            "type": "string",
+            "default": "did:example:123"
+        },
+        "domain": {
+            "title": "Domain",
+            "type": "string",
+            "default": "issuer.example.com"
+        },
+        "challenge": {
+            "title": "Challenge",
+            "type": "string",
+            "default": "99612b24-63d9-11ea-b99f-4f66f3e4f81a"
+        },
+        "proofPurpose": {
+            "title": "Proof Purpose",
+            "type": "string",
+            "default": "authentication"
+        },
+        "verificationMethod": {
+            "title": "Verification Method",
+            "type": "string",
+            "default": "did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN"
+        }
+    },
+    "required": [
+        "holder",
+        "domain",
+        "challenge",
+        "verificationMethod",
+        "proofPurpose"
+    ]
+}

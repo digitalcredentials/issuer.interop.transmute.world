@@ -2,11 +2,11 @@ import React from 'react';
 import * as chapi from 'credential-handler-polyfill';
 import GithubCorner from 'react-github-corner';
 
+
 import Theme from './components/Theme'
 import './App.css';
 
 import ReceiveCredential from './components/ReceiveCredential'
-
 import logo from './logo.svg';
 
 function App() {

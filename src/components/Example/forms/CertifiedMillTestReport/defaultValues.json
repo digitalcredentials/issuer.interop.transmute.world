@@ -1,0 +1,4 @@
+{
+    "credentialSubjectId": "did:example:123",
+    "issuer": "did:web:vc.transmute.world"
+}
