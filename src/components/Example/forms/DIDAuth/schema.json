@@ -11,7 +11,7 @@
         "domain": {
             "title": "Domain",
             "type": "string",
-            "default": "issuer.example.com"
+            "default": "vc.transmute.world"
         },
         "challenge": {
             "title": "Challenge",
