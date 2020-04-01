@@ -21,13 +21,9 @@ const options = [
     value: 'UniversityDegreeCredential',
     label: 'University Degree Credential',
   },
-  {
-    value: 'DIDAuth',
-    label: 'DID Authentication',
-  },
 ];
 
-function ReceiveCredential() {
+function ReceiveCredential(props) {
 
   const [state, setState] = React.useState({
     addToWalletType: 'CertifiedMillTestReport',
@@ -68,7 +64,8 @@ function ReceiveCredential() {
         ))}
       </TextField>
 
-      <Example {...forms[state.addToWalletType]} onSubmit={async (formData) => {
+      <Example {...props} {...forms[state.addToWalletType]} onSubmit={async (formData) => {
+        formData.issuer = formData.verificationMethod.split('#')[0];
         const vp = await getVpForAddToWalletType(state.addToWalletType, formData)
         const webCredentialWrapper = new global.WebCredential(vp.type, vp);
         // Use Credential Handler API to store

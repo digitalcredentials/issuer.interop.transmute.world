@@ -6,10 +6,16 @@ import GithubCorner from 'react-github-corner';
 import Theme from './components/Theme'
 import './App.css';
 
+import AuthenticateWithCHAPI from './components/AuthenticateWithCHAPI';
 import ReceiveCredential from './components/ReceiveCredential'
 import logo from './logo.svg';
 
 function App() {
+
+  const [state, setState] = React.useState({
+    DIDAuth: null
+  })
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -18,14 +24,20 @@ function App() {
         console.error('Error in loadOnce:', e);
       }
     })();
-  })
+  }, [])
+
+  const onDIDAuth = (vp) => {
+    setState({
+      DIDAuth: vp
+    })
+  }
   return (
     <Theme>
       <div className="App">
         <GithubCorner bannerColor={'#594aa8'} href="https://github.com/transmute-industries/issuer.interop.transmute.world" />
         <div style={{ maxWidth: '512px', margin: 'auto', paddingTop: '10%', }}>
           <img src={logo} alt="transmute logo" style={{ width: '50%', margin: 'auto', display: 'block', padding: '32px 0px' }} />
-          <ReceiveCredential />
+          {state.DIDAuth ? <ReceiveCredential DIDAuth={state.DIDAuth} /> : <AuthenticateWithCHAPI onDIDAuth={onDIDAuth} />}
         </div>
       </div>
     </Theme>

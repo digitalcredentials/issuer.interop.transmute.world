@@ -78,7 +78,13 @@ export const getVpForAddToWalletType = async (addToWalletType, formData) => {
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
-      body: JSON.stringify({ credential: bindingModel })
+      body: JSON.stringify({
+        credential: bindingModel, options: {
+          proofPurpose: 'assertionMethod',
+          issuer: formData.issuer,
+          verificationMethod: formData.verificationMethod
+        }
+      })
     });
     let vc = await response.json();
     return {

@@ -3,19 +3,18 @@
     "type": "object",
     "title": "Comment",
     "properties": {
-        "issuer": {
-            "title": "Issuer",
-            "type": "string",
-            "default": "did:web:vc.transmute.world"
+        "verificationMethod": {
+            "title": "Verification Method",
+            "type": "string"
         },
         "credentialSubjectId": {
             "title": "Credential Subject ID",
             "type": "string",
-            "default": "did:example:123"
+            "readonly": true
         }
     },
     "required": [
-        "issuer",
+        "verificationMethod",
         "credentialSubjectId"
     ]
 }

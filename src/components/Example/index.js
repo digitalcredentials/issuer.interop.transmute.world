@@ -5,9 +5,11 @@ import { SchemaForm } from 'react-schema-form';
 
 import Ajv from 'ajv';
 
-function Example({ defaultValues, schema, form, onSubmit }) {
+function Example({ schema, form, onSubmit, DIDAuth }) {
 
-    const [model, setModel] = React.useState({});
+    const [model, setModel] = React.useState({
+        credentialSubjectId: DIDAuth.holder,
+    });
 
     const [schemaFormState, setSchemaFormState] = React.useState({
         showErrors: false
@@ -30,8 +32,8 @@ function Example({ defaultValues, schema, form, onSubmit }) {
                 let ajv = new Ajv();
                 ajv.addSchema(schema, schema.$id)
                 let modelWithDefaults = {
-                    ...defaultValues,
-                    ...model
+                    ...model,
+                    credentialSubjectId: DIDAuth.holder
                 }
                 let valid = ajv.validate(
                     schema,
@@ -42,13 +44,12 @@ function Example({ defaultValues, schema, form, onSubmit }) {
                         ...schemaFormState,
                         showErrors: true
                     })
-                    console.log(ajv.errors)
+                    console.error(ajv.errors)
                 } else {
                     setSchemaFormState({
                         ...schemaFormState,
                         showErrors: false
                     })
-                    setModel({})
                     onSubmit({ ...modelWithDefaults });
                 }
             }}>Receive</Button>
