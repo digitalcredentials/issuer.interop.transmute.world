@@ -33,6 +33,20 @@ const formDataToBindingModel = (addToWalletType, formData) => {
       }
       break;
     }
+    case 'ImmunoglobulinDetectionTestCard': {
+      bindingModel = {
+        ...bindingModel,
+        issuer: {
+          ...bindingModel.issuer,
+          id: formData.issuer
+        },
+        credentialSubject: {
+          ...bindingModel.credentialSubject,
+          id: formData.credentialSubjectId
+        }
+      }
+      break;
+    }
     default:
       throw new Error('Unknown addToWalletType type.')
   }

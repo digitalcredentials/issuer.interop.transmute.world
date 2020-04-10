@@ -21,6 +21,10 @@ const options = [
     value: 'UniversityDegreeCredential',
     label: 'University Degree Credential',
   },
+  {
+    value: 'ImmunoglobulinDetectionTestCard',
+    label: 'Immunoglobulin Detection Test Card',
+  },
 ];
 
 function ReceiveCredential(props) {

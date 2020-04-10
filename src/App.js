@@ -16,6 +16,12 @@ function App() {
     DIDAuth: null
   })
 
+  const onDIDAuth = (vp) => {
+    setState({
+      DIDAuth: vp
+    })
+  }
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -26,11 +32,7 @@ function App() {
     })();
   }, [])
 
-  const onDIDAuth = (vp) => {
-    setState({
-      DIDAuth: vp
-    })
-  }
+
   return (
     <Theme>
       <div className="App">
