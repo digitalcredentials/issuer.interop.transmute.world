@@ -23,6 +23,7 @@
     "react-jsonschema-form-material-ui": "^2.0.15",
     "react-schema-form": "^0.8.4",
     "react-scripts": "3.4.0",
+    "uuid": "^7.0.3",
     "vc-js": "^0.4.1",
     "web-credential-handler": "^1.0.1"
   },
