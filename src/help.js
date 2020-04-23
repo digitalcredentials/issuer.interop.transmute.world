@@ -55,7 +55,7 @@ const formDataToBindingModel = (addToWalletType, formData) => {
 
 export const getVpForAddToWalletType = async (addToWalletType, formData) => {
   console.log(JSON.stringify(formData, null, 2))
-  let endpoint = 'https://vc.transmute.world/v0.0.0​/credentials​/issueCredential'
+  let endpoint = 'https://vc.transmute.world/v0.0.0/credentials/issuerCredential'
   const bindingModel = formDataToBindingModel(addToWalletType, formData)
 
   const response = await fetch(endpoint, {
