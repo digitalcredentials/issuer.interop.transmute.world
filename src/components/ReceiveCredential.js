@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField/TextField'
 import Snackbar from './Snackbar';
 
 import Example from './Example'
+import SelectIssuer from './SelectIssuer/SelectIssuer'
 
 import forms from './Example/forms';
 
@@ -51,12 +52,14 @@ function ReceiveCredential(props) {
       }} />
       <Typography variant="h6" style={{ marginBottom: '32px' }}>Add to Wallet</Typography>
 
+      <SelectIssuer />
+
       <TextField
         id="outlined-select-addToWalletType"
         style={{ marginBottom: '16px' }}
         select
         fullWidth
-        label="Type"
+        label="Credential Type"
         value={state.addToWalletType}
         onChange={handleChange}
         variant="outlined"
