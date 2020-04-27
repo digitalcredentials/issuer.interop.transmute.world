@@ -9,10 +9,6 @@
     ],
     "credentialSubject": {
         "id": "did:gov:usa:dhs:uscis:d656a3c3-0f14-477c-9a9f-ae4c2524af32",
-        "type": [
-            "PermanentResident",
-            "Person"
-        ],
         "givenName": "JOHN",
         "familyName": "SMITH",
         "gender": "Male",
@@ -22,8 +18,15 @@
         "lprNumber": "000-000-204",
         "commuterClassification": "C1",
         "birthCountry": "Bahamas",
-        "birthDate": "1958-08-17"
+        "birthDate": "1958-08-17",
+        "type": [
+            "PermanentResident",
+            "Person"
+        ]
     },
-    "issuer": "did:sov:danube:2PmNu2MaxZ97uyZyJJscqH",
-    "issuanceDate": "2020-03-27T22:49:29Z"
+    "issuer": "did:key:z6MkhbqxwR2fekb3mXnrFSfgu8t1z1XbMhtmnPMgDXCQyQJT",
+    "issuanceDate": "2020-04-27T23:17:14Z",
+    "identifier": "83627465",
+    "name": "Permanent Resident Card",
+    "description": "Government of Example Permanent Resident Card."
 }

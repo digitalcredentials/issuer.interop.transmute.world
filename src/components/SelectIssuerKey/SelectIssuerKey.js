@@ -3,17 +3,12 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import vendors from '../../vendors'
-import verificationMethods from '../../vendors/verificationMethods'
-
-export default function SelectIssuerKey() {
-
-    const issuer_endpoint = localStorage.getItem('issuer_endpoint') || vendors[0].value;
+export default function SelectIssuerKey({ issuerEndpoint, verificationMethods }) {
     // console.log(issuer_endpoint, verificationMethods)
-    const options = verificationMethods[issuer_endpoint];
+    const options = verificationMethods[issuerEndpoint];
 
     const [verificationMethod, setVerificationMethod] = React.useState(
-        localStorage.getItem('issuer_assertionMethod') || options[0].value
+        options[0].value
     );
 
     const handleChange = (event) => {

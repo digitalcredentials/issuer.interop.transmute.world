@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function CountrySelect() {
+export default function SelectIssuerByImage({ onChange }) {
     const classes = useStyles();
 
     let defaultVendor = vendors.find((v) => {
@@ -40,7 +40,7 @@ export default function CountrySelect() {
             getOptionLabel={(option) => option.label}
             renderOption={(option) => (
                 <React.Fragment>
-                    <img src={option.logo} style={{ height: '32px', width: '32px', paddingRight: '16px' }} />
+                    <img alt={option.label} src={option.logo} style={{ height: '32px', width: '32px', paddingRight: '16px' }} />
                     {option.label}
                 </React.Fragment>
             )}
@@ -52,6 +52,7 @@ export default function CountrySelect() {
                         ...state,
                         selectedIssuer: vendor
                     })
+                    onChange(vendor.value)
                 }
 
             }}

@@ -13,6 +13,8 @@ import SelectIssuerKey from './SelectIssuerKey/SelectIssuerKey'
 import vcSchemaForms from '../vc-schema-forms'
 import { getVpForAddToWalletType } from '../help';
 
+import vendors from '../vendors'
+import verificationMethods from '../vendors/verificationMethods'
 
 const options = Object.keys(vcSchemaForms).map((c) => {
   return {
@@ -25,6 +27,7 @@ function ReceiveCredential(props) {
 
   const [state, setState] = React.useState({
     addToWalletType: 'CertifiedMillTestReport',
+    issuerEndpoint: localStorage.getItem('issuer_endpoint') || vendors[0].value,
     tmui: {}
   });
 
@@ -48,9 +51,14 @@ function ReceiveCredential(props) {
       }} />
       <Typography variant="h6" style={{ marginBottom: '32px' }}>Add to Wallet</Typography>
 
-      <SelectIssuerByImage />
+      <SelectIssuerByImage onChange={(issuerEndpoint) => {
+        setState({
+          ...state,
+          issuerEndpoint
+        })
+      }} />
 
-      <SelectIssuerKey />
+      <SelectIssuerKey issuerEndpoint={state.issuerEndpoint} verificationMethods={verificationMethods} />
 
       <TextField
         id="outlined-select-addToWalletType"
@@ -76,8 +84,8 @@ function ReceiveCredential(props) {
           ...bindingModel.credentialSubject,
           id: props.DIDAuth.holder
         }
-      }} onSubmit={async (formData) => {
-        const vp = await getVpForAddToWalletType(state.addToWalletType, formData)
+      }} onSubmit={async (formBindingModel) => {
+        const vp = await getVpForAddToWalletType(formBindingModel)
         const webCredentialWrapper = new global.WebCredential(vp.type, vp);
         // Use Credential Handler API to store
         const result = await navigator.credentials.store(webCredentialWrapper);

@@ -1,39 +1,21 @@
 
-import vcSchemaForms from './vc-schema-forms'
 
 import vendors from './vendors'
 import verificationMethods from './vendors/verificationMethods'
 
-const formDataToBindingModel = (addToWalletType, formData) => {
+const overrideBindingModel = (formBindingModel) => {
   const issuer_endpoint = localStorage.getItem('issuer_endpoint') || vendors[0].value;
   const options = verificationMethods[issuer_endpoint];
   const assertionMethod = localStorage.getItem('issuer_assertionMethod') || options[0].value
   const issuer = assertionMethod.split('#')[0]
-  let bindingModel = vcSchemaForms[addToWalletType].bindingModel;
-
-  switch (addToWalletType) {
-    case 'CertifiedMillTestReport': {
-      bindingModel = {
-        ...bindingModel,
-        issuer,
-      }
-      break;
-    }
-    case 'UniversityDegreeCredential': {
-      bindingModel = {
-        ...bindingModel,
-        issuer,
-      }
-      break;
-    }
-    default:
-      throw new Error('Unknown addToWalletType type.')
+  return {
+    ...formBindingModel,
+    issuer,
   }
-  return bindingModel;
 }
 
-export const getVpForAddToWalletType = async (addToWalletType, formData) => {
-  const bindingModel = formDataToBindingModel(addToWalletType, formData)
+export const getVpForAddToWalletType = async (formBindingModel) => {
+  const bindingModel = overrideBindingModel(formBindingModel)
   const issuer_endpoint = localStorage.getItem('issuer_endpoint') || vendors[0].value;
   const options = verificationMethods[issuer_endpoint];
   const assertionMethod = localStorage.getItem('issuer_assertionMethod') || options[0].value

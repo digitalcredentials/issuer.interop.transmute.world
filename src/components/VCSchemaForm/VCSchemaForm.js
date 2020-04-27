@@ -1,6 +1,4 @@
 import React from 'react';
-import _ from 'lodash'
-
 import Button from '@material-ui/core/Button'
 import { SchemaForm } from 'react-schema-form';
 
@@ -11,7 +9,19 @@ import { getFormSafe, getCredentialBindingModel } from './formUtils.js'
 function VCSchemaForm({ schema, form, bindingModel, onSubmit }) {
 
     const { formSafeFlatBinding, formSafeFlatSchema, flatForm } = getFormSafe({ schema, form, bindingModel })
+
     const [model, setModel] = React.useState(formSafeFlatBinding);
+    const [state, setState] = React.useState({
+        formSafeFlatBinding, formSafeFlatSchema, flatForm
+    });
+
+    React.useEffect(() => {
+        const { formSafeFlatBinding, formSafeFlatSchema, flatForm } = getFormSafe({ schema, form, bindingModel })
+        setModel(formSafeFlatBinding)
+        setState({
+            formSafeFlatBinding, formSafeFlatSchema, flatForm
+        })
+    }, [schema, form, bindingModel])
 
     const [schemaFormState, setSchemaFormState] = React.useState({
         showErrors: false
@@ -21,8 +31,8 @@ function VCSchemaForm({ schema, form, bindingModel, onSubmit }) {
         <React.Fragment>
             <SchemaForm
                 showErrors={schemaFormState.showErrors}
-                schema={formSafeFlatSchema}
-                form={flatForm}
+                schema={state.formSafeFlatSchema}
+                form={state.flatForm}
                 model={model}
                 onModelChange={([key], value) => {
                     setModel({
@@ -32,9 +42,9 @@ function VCSchemaForm({ schema, form, bindingModel, onSubmit }) {
                 }} />
             <Button variant={'contained'} style={{ marginTop: '16px' }} onClick={() => {
                 let ajv = new Ajv();
-                ajv.addSchema(formSafeFlatSchema, formSafeFlatSchema.$id)
+                ajv.addSchema(state.formSafeFlatSchema, state.formSafeFlatSchema.$id)
                 let valid = ajv.validate(
-                    formSafeFlatSchema,
+                    state.formSafeFlatSchema,
                     model
                 );
                 if (!valid) {
@@ -44,8 +54,6 @@ function VCSchemaForm({ schema, form, bindingModel, onSubmit }) {
                     })
                     console.error(ajv.errors)
                 } else {
-
-
                     setSchemaFormState({
                         ...schemaFormState,
                         showErrors: false
