@@ -1,15 +1,17 @@
 import React from 'react';
+import _ from 'lodash'
 
 import Button from '@material-ui/core/Button'
 import { SchemaForm } from 'react-schema-form';
 
 import Ajv from 'ajv';
 
-function Example({ schema, form, onSubmit, DIDAuth }) {
 
-    const [model, setModel] = React.useState({
-        credentialSubjectId: DIDAuth.holder,
-    });
+import { getFormSafe, getCredentialBindingModel } from './formUtils.js'
+function VCSchemaForm({ schema, form, bindingModel, onSubmit }) {
+
+    const { formSafeFlatBinding, formSafeFlatSchema, flatForm } = getFormSafe({ schema, form, bindingModel })
+    const [model, setModel] = React.useState(formSafeFlatBinding);
 
     const [schemaFormState, setSchemaFormState] = React.useState({
         showErrors: false
@@ -19,10 +21,10 @@ function Example({ schema, form, onSubmit, DIDAuth }) {
         <React.Fragment>
             <SchemaForm
                 showErrors={schemaFormState.showErrors}
-                schema={schema}
-                form={form}
+                schema={formSafeFlatSchema}
+                form={flatForm}
                 model={model}
-                onModelChange={(key, value) => {
+                onModelChange={([key], value) => {
                     setModel({
                         ...model,
                         [key]: value
@@ -30,14 +32,10 @@ function Example({ schema, form, onSubmit, DIDAuth }) {
                 }} />
             <Button variant={'contained'} style={{ marginTop: '16px' }} onClick={() => {
                 let ajv = new Ajv();
-                ajv.addSchema(schema, schema.$id)
-                let modelWithDefaults = {
-                    ...model,
-                    credentialSubjectId: DIDAuth.holder
-                }
+                ajv.addSchema(formSafeFlatSchema, formSafeFlatSchema.$id)
                 let valid = ajv.validate(
-                    schema,
-                    modelWithDefaults
+                    formSafeFlatSchema,
+                    model
                 );
                 if (!valid) {
                     setSchemaFormState({
@@ -46,11 +44,14 @@ function Example({ schema, form, onSubmit, DIDAuth }) {
                     })
                     console.error(ajv.errors)
                 } else {
+
+
                     setSchemaFormState({
                         ...schemaFormState,
                         showErrors: false
                     })
-                    onSubmit({ ...modelWithDefaults });
+                    const credentialBindingModel = getCredentialBindingModel(model)
+                    onSubmit(credentialBindingModel);
                 }
             }}>Receive</Button>
         </React.Fragment>
@@ -58,4 +59,4 @@ function Example({ schema, form, onSubmit, DIDAuth }) {
     );
 }
 
-export default Example;
+export default VCSchemaForm;

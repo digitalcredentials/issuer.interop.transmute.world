@@ -12,8 +12,12 @@ import logo from './logo.svg';
 
 function App() {
 
+  let didAuth = {
+    holder: 'did:key:z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHd'
+  }
+
   const [state, setState] = React.useState({
-    DIDAuth: null
+    DIDAuth: didAuth
   })
 
   const onDIDAuth = (vp) => {
@@ -37,7 +41,7 @@ function App() {
     <Theme>
       <div className="App">
         <GithubCorner bannerColor={'#594aa8'} href="https://github.com/transmute-industries/issuer.interop.transmute.world" />
-        <div style={{ maxWidth: '512px', margin: 'auto', paddingTop: '10%', }}>
+        <div style={{ maxWidth: '512px', margin: 'auto', paddingTop: '5%', }}>
           <img src={logo} alt="transmute logo" style={{ width: '50%', margin: 'auto', display: 'block', padding: '32px 0px' }} />
           {state.DIDAuth ? <ReceiveCredential DIDAuth={state.DIDAuth} /> : <AuthenticateWithCHAPI onDIDAuth={onDIDAuth} />}
         </div>

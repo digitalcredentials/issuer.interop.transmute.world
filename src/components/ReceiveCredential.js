@@ -1,32 +1,25 @@
 import React from 'react';
-
+import _ from 'lodash';
 import Typography from '@material-ui/core/Typography'
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField/TextField'
 import Snackbar from './Snackbar';
 
-import Example from './Example'
-import SelectIssuer from './SelectIssuer/SelectIssuer'
+import VCSchemaForm from './VCSchemaForm'
+import SelectIssuerByImage from './SelectIssuerByImage/SelectIssuerByImage'
+import SelectIssuerKey from './SelectIssuerKey/SelectIssuerKey'
 
-import forms from './Example/forms';
-
+import vcSchemaForms from '../vc-schema-forms'
 import { getVpForAddToWalletType } from '../help';
 
-const options = [
-  {
-    value: 'CertifiedMillTestReport',
-    label: 'Certified Mill Test Report',
-  },
-  {
-    value: 'UniversityDegreeCredential',
-    label: 'University Degree Credential',
-  },
-  {
-    value: 'ImmunoglobulinDetectionTestCard',
-    label: 'Immunoglobulin Detection Test Card',
-  },
-];
+
+const options = Object.keys(vcSchemaForms).map((c) => {
+  return {
+    value: c,
+    label: _.startCase(c),
+  }
+})
 
 function ReceiveCredential(props) {
 
@@ -38,6 +31,9 @@ function ReceiveCredential(props) {
   const handleChange = event => {
     setState({ ...state, addToWalletType: event.target.value });
   };
+
+  const { schema, form, bindingModel } = vcSchemaForms[state.addToWalletType];
+  // console.log({ schema, form, bindingModel })
 
   return (
     <Paper style={{ padding: '32px' }}>
@@ -52,7 +48,9 @@ function ReceiveCredential(props) {
       }} />
       <Typography variant="h6" style={{ marginBottom: '32px' }}>Add to Wallet</Typography>
 
-      <SelectIssuer />
+      <SelectIssuerByImage />
+
+      <SelectIssuerKey />
 
       <TextField
         id="outlined-select-addToWalletType"
@@ -62,7 +60,7 @@ function ReceiveCredential(props) {
         label="Credential Type"
         value={state.addToWalletType}
         onChange={handleChange}
-        variant="outlined"
+
       >
         {options.map(option => (
           <MenuItem key={option.value} value={option.value}>
@@ -71,8 +69,14 @@ function ReceiveCredential(props) {
         ))}
       </TextField>
 
-      <Example {...props} {...forms[state.addToWalletType]} onSubmit={async (formData) => {
-        formData.issuer = formData.verificationMethod.split('#')[0];
+
+      <VCSchemaForm schema={schema} form={form} bindingModel={{
+        ...bindingModel,
+        credentialSubject: {
+          ...bindingModel.credentialSubject,
+          id: props.DIDAuth.holder
+        }
+      }} onSubmit={async (formData) => {
         const vp = await getVpForAddToWalletType(state.addToWalletType, formData)
         const webCredentialWrapper = new global.WebCredential(vp.type, vp);
         // Use Credential Handler API to store

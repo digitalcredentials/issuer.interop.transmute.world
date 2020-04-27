@@ -1,49 +1,28 @@
 
-import bindingModels from './bindingModels'
+import vcSchemaForms from './vc-schema-forms'
+
+import vendors from './vendors'
+import verificationMethods from './vendors/verificationMethods'
 
 const formDataToBindingModel = (addToWalletType, formData) => {
-  let bindingModel = bindingModels[addToWalletType];
+  const issuer_endpoint = localStorage.getItem('issuer_endpoint') || vendors[0].value;
+  const options = verificationMethods[issuer_endpoint];
+  const assertionMethod = localStorage.getItem('issuer_assertionMethod') || options[0].value
+  const issuer = assertionMethod.split('#')[0]
+  let bindingModel = vcSchemaForms[addToWalletType].bindingModel;
+
   switch (addToWalletType) {
-    case 'DIDAuth': {
-      bindingModel = {
-        ...bindingModel,
-        holder: formData.holder,
-      }
-      break;
-    }
     case 'CertifiedMillTestReport': {
       bindingModel = {
         ...bindingModel,
-        issuer: formData.issuer,
-        credentialSubject: {
-          ...bindingModel.credentialSubject,
-          id: formData.credentialSubjectId
-        }
+        issuer,
       }
       break;
     }
     case 'UniversityDegreeCredential': {
       bindingModel = {
         ...bindingModel,
-        issuer: formData.issuer,
-        credentialSubject: {
-          ...bindingModel.credentialSubject,
-          id: formData.credentialSubjectId
-        }
-      }
-      break;
-    }
-    case 'ImmunoglobulinDetectionTestCard': {
-      bindingModel = {
-        ...bindingModel,
-        issuer: {
-          ...bindingModel.issuer,
-          id: formData.issuer
-        },
-        credentialSubject: {
-          ...bindingModel.credentialSubject,
-          id: formData.credentialSubjectId
-        }
+        issuer,
       }
       break;
     }
@@ -54,11 +33,11 @@ const formDataToBindingModel = (addToWalletType, formData) => {
 }
 
 export const getVpForAddToWalletType = async (addToWalletType, formData) => {
-  console.log(JSON.stringify(formData, null, 2))
-  let endpoint = localStorage.getItem('issuer_endpoint') || 'https://vc.transmute.world/v0.0.0/credentials/issueCredential'
   const bindingModel = formDataToBindingModel(addToWalletType, formData)
-
-  const response = await fetch(endpoint, {
+  const issuer_endpoint = localStorage.getItem('issuer_endpoint') || vendors[0].value;
+  const options = verificationMethods[issuer_endpoint];
+  const assertionMethod = localStorage.getItem('issuer_assertionMethod') || options[0].value
+  const response = await fetch(issuer_endpoint, {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
@@ -70,7 +49,7 @@ export const getVpForAddToWalletType = async (addToWalletType, formData) => {
     body: JSON.stringify({
       credential: bindingModel, options: {
         proofPurpose: 'assertionMethod',
-        verificationMethod: formData.verificationMethod
+        verificationMethod: assertionMethod
       }
     })
   });
