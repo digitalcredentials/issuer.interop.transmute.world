@@ -1,9 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
+
 import Typography from '@material-ui/core/Typography'
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField/TextField'
+
 import Snackbar from './Snackbar';
 
 import VCSchemaForm from './VCSchemaForm'
@@ -13,29 +13,57 @@ import SelectIssuerKey from './SelectIssuerKey/SelectIssuerKey'
 import vcSchemaForms from '../vc-schema-forms'
 import { getVpForAddToWalletType } from '../help';
 
+import AutocompleteSelect from './AutocompleteSelect/AutocompleteSelect'
 import vendors from '../vendors'
 import verificationMethods from '../vendors/verificationMethods'
 
-const options = Object.keys(vcSchemaForms).map((c) => {
-  return {
-    value: c,
-    label: _.startCase(c),
-  }
-})
+const options = [
+  {
+    value: 'CertifiedMillTestReport',
+    label: 'Certified Mill Test Report',
+    logo: require('../images/dhs.png')
+  },
+  {
+    value: 'BillOfLadingCredential',
+    label: 'Bill Of Lading Credential',
+    logo: require('../images/dhs.png')
+  },
+  {
+    value: 'PermanentResidentCard',
+    label: 'Permanent Resident Card',
+    logo: require('../images/dhs.png')
+  },
+  {
+    value: 'UniversityDegreeCredential',
+    label: 'University Degree Credential',
+    logo: require('../images/transmute.png')
+  },
+  // {
+  //   value: 'ImmunoglobulinDetectionTestCard',
+  //   label: 'Immunoglobulin Detection Test Card',
+  //   logo: require('../images/transmute.png')
+  // },
+  // {
+  //   value: 'AtlanticLumberBoardCredential',
+  //   label: 'Atlantic Lumber Board Credential',
+  //   logo: require('../images/customs_direct.png')
+  // }
+];
+
 
 function ReceiveCredential(props) {
 
   const [state, setState] = React.useState({
-    addToWalletType: 'CertifiedMillTestReport',
+    addToWalletType: options[0],
     issuerEndpoint: localStorage.getItem('issuer_endpoint') || vendors[0].value,
     tmui: {}
   });
 
-  const handleChange = event => {
-    setState({ ...state, addToWalletType: event.target.value });
+  const handleChange = option => {
+    setState({ ...state, addToWalletType: option });
   };
 
-  const { schema, form, bindingModel } = vcSchemaForms[state.addToWalletType];
+  const { schema, form, bindingModel } = vcSchemaForms[state.addToWalletType.value];
   // console.log({ schema, form, bindingModel })
 
   return (
@@ -60,22 +88,8 @@ function ReceiveCredential(props) {
 
       <SelectIssuerKey issuerEndpoint={state.issuerEndpoint} verificationMethods={verificationMethods} />
 
-      <TextField
-        id="outlined-select-addToWalletType"
-        style={{ marginBottom: '16px' }}
-        select
-        fullWidth
-        label="Credential Type"
-        value={state.addToWalletType}
-        onChange={handleChange}
-
-      >
-        {options.map(option => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
+      <br />
+      <AutocompleteSelect options={options} value={state.addToWalletType} label={'Credential Type'} onChange={handleChange} />
 
 
       <VCSchemaForm schema={schema} form={form} bindingModel={{
