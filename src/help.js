@@ -30,7 +30,7 @@ export const getVpForAddToWalletType = async (formBindingModel) => {
     referrerPolicy: 'no-referrer',
     body: JSON.stringify({
       credential: bindingModel, options: {
-        proofPurpose: 'assertionMethod',
+        // proofPurpose: 'assertionMethod',
         assertionMethod: assertionMethod
       }
     })
