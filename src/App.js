@@ -12,9 +12,10 @@ import logo from './logo.svg';
 
 function App() {
 
-  let didAuth = {
-    holder: 'did:key:z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHd'
-  }
+  // let didAuth = {
+  //   holder: 'did:key:z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHd'
+  // }
+  let didAuth = null;
 
   const [state, setState] = React.useState({
     DIDAuth: didAuth
