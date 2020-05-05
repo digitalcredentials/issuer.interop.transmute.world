@@ -5,6 +5,7 @@ import factom from '../images/factom.png'
 import digital_bazaar from '../images/digital_bazaar.png'
 import secure_key from '../images/secure_key.png'
 import danube_tech from '../images/danube_tech.png'
+import sicpa from '../images/sicpa.png'
 
 
 const vendors = [
@@ -37,6 +38,11 @@ const vendors = [
         value: 'https://uniissuer.io/api/credentials/issueCredential',
         label: 'Danube Tech',
         logo: danube_tech
+    },
+    {
+        value: 'https://svip-interop.ocs-support.com/api/credentials/issueCredential',
+        label: 'SICPA',
+        logo: sicpa
     },
 ];
 

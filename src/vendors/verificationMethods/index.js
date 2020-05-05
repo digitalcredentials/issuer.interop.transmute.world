@@ -64,5 +64,15 @@ export default {
             label: 'did:key:z6Mkg9AkjefxdJFSphkStzXwHQnbweN43mCqA37aANGRxF1o',
             value: 'did:key:z6Mkg9AkjefxdJFSphkStzXwHQnbweN43mCqA37aANGRxF1o#z6Mkg9AkjefxdJFSphkStzXwHQnbweN43mCqA37aANGRxF1o',
         },
+    ],
+    'https://svip-interop.ocs-support.com/api/credentials/issueCredential': [
+        {
+            label: 'did:sov:staging:PiEVD2uU2qKEQ5oxx1BJ6A',
+            value: 'did:sov:staging:PiEVD2uU2qKEQ5oxx1BJ6A#key-1',
+        },
+        {
+            label: 'did:key:z6MkrqCMy45WhL3UEa1gGTHUtr17AvU4czfP5fH9KNDoYaYN',
+            value: 'did:key:z6MkrqCMy45WhL3UEa1gGTHUtr17AvU4czfP5fH9KNDoYaYN#z6MkrqCMy45WhL3UEa1gGTHUtr17AvU4czfP5fH9KNDoYaYN',
+        },
     ]
 }
