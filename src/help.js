@@ -31,6 +31,8 @@ export const getVpForAddToWalletType = async (formBindingModel) => {
     body: JSON.stringify({
       credential: bindingModel, options: {
         // proofPurpose: 'assertionMethod',
+        issuanceDate: bindingModel.issuanceDate,
+        issuer: assertionMethod.split('#')[0],
         assertionMethod: assertionMethod
       }
     })
