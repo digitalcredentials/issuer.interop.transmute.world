@@ -38,6 +38,10 @@ export const getVpForAddToWalletType = async (formBindingModel) => {
     })
   });
   let vc = await response.json();
+  if (response.status >= 400) {
+    console.error(vc);
+    throw new Error('Something went wrong.')
+  }
   return {
     "@context": [
       "https://www.w3.org/2018/credentials/v1",

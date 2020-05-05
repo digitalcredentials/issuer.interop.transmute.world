@@ -99,26 +99,44 @@ function ReceiveCredential(props) {
           id: props.DIDAuth.holder
         }
       }} onSubmit={async (formBindingModel) => {
-        const vp = await getVpForAddToWalletType(formBindingModel)
-        const webCredentialWrapper = new global.WebCredential(vp.type, vp);
-        // Use Credential Handler API to store
-        const result = await navigator.credentials.store(webCredentialWrapper);
-        console.log('Result of receiving via store() request:', result);
-        setState({
-          ...state,
-          tmui: {
-            ...state.tmui,
-            snackBarMessage: {
-              open: true,
-              variant: 'success',
-              message: 'Credential stored in wallet.',
-              vertical: 'top',
-              horizontal: 'right',
-              autoHideDuration: 20 * 1000,
-            },
-          }
+        try {
+          const vp = await getVpForAddToWalletType(formBindingModel)
+          const webCredentialWrapper = new global.WebCredential(vp.type, vp);
+          // Use Credential Handler API to store
+          const result = await navigator.credentials.store(webCredentialWrapper);
+          console.log('Result of receiving via store() request:', result);
+          setState({
+            ...state,
+            tmui: {
+              ...state.tmui,
+              snackBarMessage: {
+                open: true,
+                variant: 'success',
+                message: 'Credential stored in wallet.',
+                vertical: 'top',
+                horizontal: 'right',
+                autoHideDuration: 2 * 1000,
+              },
+            }
+          });
+        } catch (e) {
+          console.error(e);
+          setState({
+            ...state,
+            tmui: {
+              ...state.tmui,
+              snackBarMessage: {
+                open: true,
+                variant: 'error',
+                message: 'Something went wrong. See Developer Console.',
+                vertical: 'top',
+                horizontal: 'right',
+                autoHideDuration: 2 * 1000,
+              },
+            }
+          });
         }
-        );
+
       }} />
     </Paper >
   );
